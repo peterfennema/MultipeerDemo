@@ -127,6 +127,7 @@ NSString *const kServiceType = @"pf-connector";
     NSLog(@"Advertiser %@ received an invitation from %@", self.peerId.displayName, peerID.displayName);
     invitationHandler(YES, self.session);
     NSLog(@"Advertiser %@ accepted invitation from %@", self.peerId.displayName, peerID.displayName);
+    [self logPeers];
 }
 
 
