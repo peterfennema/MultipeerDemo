@@ -141,8 +141,17 @@ NSString *const kServiceType = @"pf-connector";
 - (void)browser:(MCNearbyServiceBrowser *)browser foundPeer:(MCPeerID *)peerID withDiscoveryInfo:(NSDictionary *)info
 {
     NSLog(@"Browser %@ found %@", self.peerId.displayName, peerID.displayName);
-    NSLog(@"Browser %@ invites %@ to connect", self.peerId.displayName, peerID.displayName);
-    [self.browser invitePeer:peerID toSession:self.session withContext:nil timeout:10];
+    
+    // Should I invite the peer or should the peer invite me? Let the decision be based on the lexical ordering of the peer name.
+    BOOL shouldInvite = ([self.peerId.displayName compare:peerID.displayName] == NSOrderedAscending);
+    if (shouldInvite) {
+        // I will invite the peer, the remote peer will NOT invite me.
+        NSLog(@"Browser %@ invites %@ to connect", self.peerId.displayName, peerID.displayName);
+        [self.browser invitePeer:peerID toSession:self.session withContext:nil timeout:10];
+    } else {
+        // I will NOT invite the peer, the remote peer will invite me.
+        NSLog(@"Browser %@ does not invite %@ to connect", self.peerId.displayName, peerID.displayName);
+    }
 }
 
 - (void)browser:(MCNearbyServiceBrowser *)browser lostPeer:(MCPeerID *)peerID
