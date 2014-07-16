@@ -142,8 +142,8 @@ NSString *const kServiceType = @"pf-connector";
 {
     NSLog(@"Browser %@ found %@", self.peerId.displayName, peerID.displayName);
     
-    // Should I invite the peer or should the peer invite me? Let the decision be based on the lexical ordering of the peer name.
-    BOOL shouldInvite = ([self.peerId.displayName compare:peerID.displayName] == NSOrderedAscending);
+    // Should I invite the peer or should the peer invite me? Let the decision be based on the comparison of the hash values of the peerId.
+    BOOL shouldInvite = self.peerId.hash < peerID.hash;
     if (shouldInvite) {
         // I will invite the peer, the remote peer will NOT invite me.
         NSLog(@"Browser %@ invites %@ to connect", self.peerId.displayName, peerID.displayName);
